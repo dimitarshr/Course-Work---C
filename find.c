@@ -19,19 +19,19 @@ int main(int argc, char** argv){
 	// This for loop goes through the command line arguments and stores the appropriate values in different variables
 	// The argument after '-i' is the name of the input file we are using and
 	// The argument after '-o' is the name of the output file we are using
-	// The argument '-c' means that I have to ignore the upper and/or the lower case of the text I am searching in
+	// The argument '-c' means that I have to ignore the upper and the lower case of the letters
 	for (int i = 1;i<argc;i++){
 		// If the current argument is not '-i','-o' or '-c' 
 		// and the argument in front of it is not '-i','-o' that means that this is the word I have to look for.
 		if (strcmp(argv[i], "-i") != 0 && strcmp(argv[i], "-o") != 0 && strcmp(argv[i], "-c") != 0 && strcmp(argv[i-1], "-i") != 0 && strcmp(argv[i-1], "-o") != 0){
 			searchingWord = argv[i];
 		}
-		// If the current argument is '-i' and there are more arguments after this, that means that this is the input file.
+		// If the current argument is '-i' and there are more arguments after this, that means that the next argument is the input file.
 		// In case the user decides not to enter input file, I am assuming that he/she wants to use the standard input in order to get the text to search in
-		// If the user enters invalid file name, the program stops
 		else if (strcmp(argv[i],"-i") == 0){
 			if ((i+1)<argc){
 				readFileName = argv[i+1];
+				// After I have the input file name I try to open it. If the user enters invalid file name, the command line tool stops
 				fPointerRead = fopen(readFileName, "r");
 				if (fPointerRead == NULL){
 					printf("\n\tThe input file is invalid!\n");
@@ -43,9 +43,9 @@ int main(int argc, char** argv){
 				return 0;
 			}
 		}
-		// If the current argument is '-o' that means that this is the output file.
+		// If the current argument is '-o' and there are more arguments after this, that means that the next argument is the output file.
 		// In case the user decides not to enter output file, I am assuming that he/she wants to use the standard output in order to output the results from the search
-		// If the user enters invalid file name, the program stops
+		// If the user enters invalid file name, the command line tool stops
 		else if (strcmp(argv[i], "-o") == 0){
 			if ((i+1)<argc){
 				writeFileName = argv[i+1];
@@ -56,13 +56,13 @@ int main(int argc, char** argv){
 				return 0;
 			}
 		} 
-		// If the current argument is '-c', that means that we have to ignore the case of the letters. So we raise the 'ignoreCase' flag
+		// If the current argument is '-c', that means that I have to ignore the case of the letters. So I raise the 'ignoreCase' flag
 		else if (strcmp(argv[i], "-c") == 0){
 			ignoreCase = 1;
 		}
 	}
 	
-	// If the user did not input anything for the searching word the program stops and displays a message as otherwise it would crash
+	// If the user did not input anything for the searching word the command line tool stops and displays a message as otherwise it will crash
 	if (searchingWord == NULL){
 		printf("\n\tYou did not enter the word to search for!\n");
 		return 0;
@@ -100,7 +100,6 @@ int main(int argc, char** argv){
 					ignoreCaseMethod(singleLine);
 					ignoreCaseMethod(searchingWord);
 				}
-				
 				// Once I have everything I call the 'searchMethod' function, which is of type void
 				searchMethod(searchingWord, singleLine, originalText, &numberOfMatches, &numberOfLine, fPointerWrite, writeFileName);
 				// As I am passing the variable 'numberOfMatches' by pointer, once the method is executed I know if there were some matches
@@ -157,12 +156,13 @@ int main(int argc, char** argv){
 		}
 		// As I have allocated some memory, I am freeing it here.
 		free(singleLine);
+		free(originalText);
 		// Once I have finished reading the input file, I close the file pointer.
 		fclose(fPointerRead);
 	}
 	// After I have finished reading the text either from the standart input or from a file
 	// I check if the number of 'noMatchFlag' is equal to the number of lines
-	// If so, that means that we did not have any matches
+	// If so, that means that there were no matches
 	if (noMatchFlag == numberOfLine)
 		fprintf(fPointerWrite,"No match was found!");
 	// Once I have finished writing to the output file, I close the file pointer.

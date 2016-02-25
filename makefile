@@ -1,4 +1,4 @@
-all: find test0 test1 test2
+all: find test0 test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 
 
 find:
 	cl find.c search.c
@@ -55,3 +55,7 @@ clean:
 	del *.obj
 	del *.exe
 	del *.asm
+	del test0_output.txt
+	del test1_output.txt
+	del test2_output.txt
+	del test10_output.txt
