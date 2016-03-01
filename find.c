@@ -26,7 +26,7 @@ int main(int argc, char** argv){
 		if (strcmp(argv[i], "-i") != 0 && strcmp(argv[i], "-o") != 0 && strcmp(argv[i], "-c") != 0 && strcmp(argv[i-1], "-i") != 0 && strcmp(argv[i-1], "-o") != 0){
 			searchingWord = argv[i];
 		}
-		// If the current argument is '-i' and there are more arguments after this, that means that the next argument is the input file.
+		// If the current argument is '-i' and there are more arguments after this, that means that the next argument is the name of the input file.
 		// In case the user decides not to enter input file, I am assuming that he/she wants to use the standard input in order to get the text to search in
 		else if (strcmp(argv[i],"-i") == 0){
 			if ((i+1)<argc){
@@ -43,8 +43,8 @@ int main(int argc, char** argv){
 				return 0;
 			}
 		}
-		// If the current argument is '-o' and there are more arguments after this, that means that the next argument is the output file.
-		// In case the user decides not to enter output file, I am assuming that he/she wants to use the standard output in order to output the results from the search
+		// If the current argument is '-o' and there are more arguments after this, that means that the next argument is the name of the output file.
+		// In case the user decides not to enter output file, I am assuming that he/she wants to use the standard output in order to get the results from the search
 		// If the user enters invalid file name, the command line tool stops
 		else if (strcmp(argv[i], "-o") == 0){
 			if ((i+1)<argc){
@@ -101,7 +101,7 @@ int main(int argc, char** argv){
 					ignoreCaseMethod(searchingWord);
 				}
 				// Once I have everything I call the 'searchMethod' function, which is of type void
-				searchMethod(searchingWord, singleLine, originalText, &numberOfMatches, &numberOfLine, fPointerWrite, writeFileName);
+				searchMethod(searchingWord, singleLine, originalText, &numberOfMatches, &numberOfLine, fPointerWrite);
 				// As I am passing the variable 'numberOfMatches' by pointer, once the method is executed I know if there were some matches
 				// If there were no matches on this line, I increment the 'noMatchFlag' by one
 				if (numberOfMatches == 0)
@@ -113,7 +113,7 @@ int main(int argc, char** argv){
 		free(singleLine);
 		free(originalText);
 	}
-
+	// If there is an input file, this part of code is executed.
 	else{
 		int maxLineLength = 0;
 		// This while loop goes through the whole file character by character and calculates the length of the longest line
@@ -141,14 +141,14 @@ int main(int argc, char** argv){
 				// Before I convert the text to lower case, I store it in the variable 'originalText'
 				// This allowes me to print the text as it is in the original form
 				strcpy(originalText,singleLine);
-				// If the ignore case flag is raised I convert everything to lower case
+				// If the ignore case flag is raised, I convert everything to lower case.
 				if (ignoreCase == 1){
 					ignoreCaseMethod(singleLine);
 					ignoreCaseMethod(searchingWord);
 				}
 				// Once I have everything I call the 'searchMethod' function, which is of type void
-				searchMethod(searchingWord, singleLine, originalText, &numberOfMatches, &numberOfLine, fPointerWrite, writeFileName);
-				// As I am passing the variable 'numberOfMatches' by pointer, once the method is executed I know if the were some matches
+				searchMethod(searchingWord, singleLine, originalText, &numberOfMatches, &numberOfLine, fPointerWrite);
+				// As I am passing the variable 'numberOfMatches' by pointer, once the method is executed I know if there were some matches
 				// If there were not any matches on this line, I increment the 'noMatchFlag' by one
 				if (numberOfMatches == 0)
 						noMatchFlag = noMatchFlag + 1;
@@ -160,7 +160,7 @@ int main(int argc, char** argv){
 		// Once I have finished reading the input file, I close the file pointer.
 		fclose(fPointerRead);
 	}
-	// After I have finished reading the text either from the standart input or from a file
+	// After I have finished reading the text either from the standard input or from a file
 	// I check if the number of 'noMatchFlag' is equal to the number of lines
 	// If so, that means that there were no matches
 	if (noMatchFlag == numberOfLine)

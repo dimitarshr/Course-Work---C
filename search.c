@@ -5,7 +5,7 @@
 // The 'searchMethod' is of type void and takes a number of arguments
 // It takes the word I am looking for, the current line of text, the original text,
 // the number of matches, the number of the current line, the file pointer to write to and the file name to write to
-void searchMethod(char *word, char *line, char* originalText, int *numberOfMatches, int *numberOfLine, FILE *fPointerWrite, char *writeFileName){
+void searchMethod(char *word, char *line, char* originalText, int *numberOfMatches, int *numberOfLine, FILE *fPointerWrite){
 	int textLength = strlen(line);
 	int wordLength = strlen(word);
 	int searchingWordIndex = 0;
